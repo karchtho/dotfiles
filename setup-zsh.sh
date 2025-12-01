@@ -48,9 +48,14 @@ if [ ! -d "$HOME/.dotfiles" ]; then
         git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@"
     }
     
-    # Checkout files
-    dotfiles checkout 2>&1 | grep -E "\s+\." | awk '{print $1}' | xargs -I{} mv {} ~/.dotfiles-backup/{} 2>/dev/null || true
-    dotfiles checkout
+    # Checkout files (with conflict handling)
+    if ! dotfiles checkout 2>&1; then
+        echo "  Conflict detected, moving existing files to backup..."
+        dotfiles checkout 2>&1 | grep -E "^\s+\." | sed 's/^\s*//' | while read -r file; do
+            [ -f "$HOME/$file" ] && mv "$HOME/$file" ~/.dotfiles-backup/
+        done
+        dotfiles checkout
+    fi
     
     # Configure repo
     dotfiles config --local status.showUntrackedFiles no
