@@ -7,29 +7,7 @@ My shell configuration files, managed with a bare git repository.
 - `.p10k.zsh` — Powerlevel10k theme configuration (auto-generated during setup)
 - `bin/rcc` — React component creator script (create boilerplate React components)
 
-## Quick setup on a new machine
-
-### One-command install (recommended)
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/karchtho/dotfiles/main/setup-shell.sh | bash
-```
-
-This script will:
-1. Install Zsh, Oh My Zsh, Powerlevel10k, and plugins
-2. Clone your dotfiles repo and checkout your configs
-3. Set Zsh as your default shell
-
-**Then restart your terminal or run:**
-```bash
-exec zsh
-```
-
-Your shell is ready to go!
-
----
-
-## Manual installation (if you prefer step-by-step)
+## Setup on a new machine
 
 ### 1. Install dependencies
 ```bash
