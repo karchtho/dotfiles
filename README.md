@@ -60,18 +60,7 @@ dotfiles checkout
 dotfiles config --local status.showUntrackedFiles no
 ```
 
-### 5. Configure Powerlevel10k (optional)
-
-When you first load Zsh, Powerlevel10k will automatically launch its configuration wizard. Complete it to customize your prompt appearance.
-
-This creates `~/.p10k.zsh` which you should add to your dotfiles:
-```bash
-dotfiles add ~/.p10k.zsh
-dotfiles commit -m "add p10k configuration"
-dotfiles push
-```
-
-### 6. Reload your shell
+### 5. Reload your shell
 ```bash
 source ~/.zshrc
 ```
