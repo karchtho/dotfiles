@@ -11,24 +11,21 @@ My shell configuration files, managed with a bare git repository.
 
 ### One-command install (recommended)
 
-**Requirements:** SSH key configured for GitHub (or modify script to use HTTPS)
-
 ```bash
-curl -fsSL https://raw.githubusercontent.com/karchtho/dotfiles/main/setup-zsh.sh | bash
+curl -fsSL https://raw.githubusercontent.com/karchtho/dotfiles/main/setup-shell.sh | bash
 ```
 
 This script will:
-1. Install Zsh, Oh My Zsh, and Powerlevel10k
-2. Clone your dotfiles repo (bare repository method)
-3. Checkout your configuration files (`.zshrc`, `.aliases`, `.p10k.zsh`, `bin/rcc`)
-4. Set Zsh as your default shell
+1. Install Zsh, Oh My Zsh, Powerlevel10k, and plugins
+2. Clone your dotfiles repo and checkout your configs
+3. Set Zsh as your default shell
 
-**Then restart your shell:**
+**Then restart your terminal or run:**
 ```bash
 exec zsh
 ```
 
-Powerlevel10k configuration wizard will launch automatically on first run.
+Your shell is ready to go!
 
 ---
 
