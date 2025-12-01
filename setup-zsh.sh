@@ -32,19 +32,20 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 # [5/7] Clone dotfiles repo (bare)
 if [ ! -d "$HOME/.dotfiles" ]; then
     echo "[5/7] Clonage du repo dotfiles..."
-    
+
     # Backup existing files
     mkdir -p ~/.dotfiles-backup
     [ -f ~/.zshrc ] && mv ~/.zshrc ~/.dotfiles-backup/
     [ -f ~/.aliases ] && mv ~/.aliases ~/.dotfiles-backup/
     [ -f ~/.p10k.zsh ] && mv ~/.p10k.zsh ~/.dotfiles-backup/
-    
-    # Clone bare repo
-    git clone --bare git@github.com:karchtho/dotfiles.git $HOME/.dotfiles
+
+    # Clone bare repo (try SSH first, fallback to HTTPS)
+    git clone --bare git@github.com:karchtho/dotfiles.git $HOME/.dotfiles 2>/dev/null || \
+    git clone --bare https://github.com/karchtho/dotfiles.git $HOME/.dotfiles
     
     # Define alias temporarily
     function dotfiles {
-        git --git-dir=$HOME/.dotfiles --work-tree=$HOME $@
+        git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" "$@"
     }
     
     # Checkout files
@@ -66,7 +67,7 @@ mkdir -p ~/bin
 # [7/7] Set Zsh as default shell
 echo "[7/7] Configuration de zsh comme shell par défaut..."
 if [ "$SHELL" != "$(which zsh)" ]; then
-    chsh -s $(which zsh)
+    chsh -s "$(which zsh)"
 fi
 
 echo "=================================================="

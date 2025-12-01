@@ -2,13 +2,17 @@
 My shell configuration files, managed with a bare git repository.
 
 ## What's included
-- `.zshrc` — Zsh config with Oh My Zsh, Powerlevel10k, plugins
-- `.aliases` — Shell aliases (git, navigation, dev, system)
-- `bin/rcc` — React component creator script
+- `.zshrc` — Zsh config with Oh My Zsh, Powerlevel10k, plugins (sources `.aliases`)
+- `.aliases` — Shell aliases (git, navigation, dev, system, fail2ban)
+- `.p10k.zsh` — Powerlevel10k theme configuration (auto-generated during setup)
+- `bin/rcc` — React component creator script (create boilerplate React components)
 
 ## Quick setup on a new machine
 
 ### One-command install (recommended)
+
+**Requirements:** SSH key configured for GitHub (or modify script to use HTTPS)
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/karchtho/dotfiles/main/setup-zsh.sh | bash
 ```
@@ -16,15 +20,15 @@ curl -fsSL https://raw.githubusercontent.com/karchtho/dotfiles/main/setup-zsh.sh
 This script will:
 1. Install Zsh, Oh My Zsh, and Powerlevel10k
 2. Clone your dotfiles repo (bare repository method)
-3. Checkout your configuration files
-4. Set everything up automatically
+3. Checkout your configuration files (`.zshrc`, `.aliases`, `.p10k.zsh`, `bin/rcc`)
+4. Set Zsh as your default shell
 
 **Then restart your shell:**
 ```bash
 exec zsh
 ```
 
-Powerlevel10k configuration wizard will launch automatically.
+Powerlevel10k configuration wizard will launch automatically on first run.
 
 ---
 
@@ -47,8 +51,19 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 ```
 
 ### 2. Clone the dotfiles repo
+
+**With SSH (requires SSH key configured):**
 ```bash
 git clone --bare git@github.com:karchtho/dotfiles.git $HOME/.dotfiles
+```
+
+**Or with HTTPS:**
+```bash
+git clone --bare https://github.com/karchtho/dotfiles.git $HOME/.dotfiles
+```
+
+Then create the alias:
+```bash
 alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 ```
 
@@ -70,7 +85,18 @@ dotfiles checkout
 dotfiles config --local status.showUntrackedFiles no
 ```
 
-### 5. Reload your shell
+### 5. Configure Powerlevel10k (optional)
+
+When you first load Zsh, Powerlevel10k will automatically launch its configuration wizard. Complete it to customize your prompt appearance.
+
+This creates `~/.p10k.zsh` which you should add to your dotfiles:
+```bash
+dotfiles add ~/.p10k.zsh
+dotfiles commit -m "add p10k configuration"
+dotfiles push
+```
+
+### 6. Reload your shell
 ```bash
 source ~/.zshrc
 ```

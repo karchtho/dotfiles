@@ -30,17 +30,10 @@ plugins=(
 # Charge Oh My Zsh
 source $ZSH/oh-my-zsh.sh
 
-# Aliases utiles
-alias ll='ls -lah'
-alias gs='git status'
-alias ga='git add'
-alias gc='git commit'
-alias gp='git push'
-alias gl='git log --oneline --graph --all'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias update-all='~/update-all.sh'
-alias cat='batcat'
+# Load aliases from dedicated file
+if [ -f ~/.aliases ]; then
+  source ~/.aliases
+fi
 
 # Autocompletion
 autoload -Uz compinit
