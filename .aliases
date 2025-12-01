@@ -51,5 +51,8 @@ alias free='free -h'
 alias zshrc='nano ~/.zshrc'
 alias aliases='nano ~/.aliases'
 
+#Serveur
+alias f2b='sudo fail2ban-client status sshd'
+
 #QOL
 alias cat='batcat'
