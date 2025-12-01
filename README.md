@@ -1,20 +1,87 @@
 # Dotfiles
-
 My shell configuration files, managed with a bare git repository.
 
 ## What's included
-
 - `.zshrc` — Zsh config with Oh My Zsh, Powerlevel10k, plugins
 - `.aliases` — Shell aliases (git, navigation, dev, system)
 - `bin/rcc` — React component creator script
-- `setup-zsh.sh` — Fresh install script for Zsh + Oh My Zsh + Powerlevel10k
+
+## Quick setup on a new machine
+
+### One-command install (recommended)
+```bash
+curl -fsSL https://raw.githubusercontent.com/karchtho/dotfiles/main/setup-zsh.sh | bash
+```
+
+This script will:
+1. Install Zsh, Oh My Zsh, and Powerlevel10k
+2. Clone your dotfiles repo (bare repository method)
+3. Checkout your configuration files
+4. Set everything up automatically
+
+**Then restart your shell:**
+```bash
+exec zsh
+```
+
+Powerlevel10k configuration wizard will launch automatically.
+
+---
+
+## Manual installation (if you prefer step-by-step)
+
+### 1. Install dependencies
+```bash
+# Install Zsh
+sudo apt update && sudo apt install -y zsh git curl
+
+# Install Oh My Zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# Install Powerlevel10k theme
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+
+# Install zsh plugins
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+```
+
+### 2. Clone the dotfiles repo
+```bash
+git clone --bare git@github.com:karchtho/dotfiles.git $HOME/.dotfiles
+alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
+```
+
+### 3. Checkout the files
+```bash
+dotfiles checkout
+```
+
+**If you get conflicts** (existing files that would be overwritten):
+```bash
+mkdir -p ~/.dotfiles-backup
+mv ~/.zshrc ~/.dotfiles-backup/
+# Move other conflicting files if needed
+dotfiles checkout
+```
+
+### 4. Configure the repo
+```bash
+dotfiles config --local status.showUntrackedFiles no
+```
+
+### 5. Reload your shell
+```bash
+source ~/.zshrc
+```
+
+---
 
 ## How it works
 
-This repo uses the **bare git repository** method. Instead of keeping dotfiles in a folder with symlinks, the git data lives in `~/.dotfiles` while the actual files stay in their normal locations (`~/.zshrc`, `~/bin/`, etc.).
+This repo uses the **bare git repository** method. The git data lives in `~/.dotfiles` while files stay in their normal locations (`~/.zshrc`, `~/bin/`, etc.).
 
 You interact with it using a `dotfiles` alias instead of `git`:
-
 ```bash
 dotfiles status
 dotfiles add ~/.zshrc
@@ -22,81 +89,24 @@ dotfiles commit -m "updated aliases"
 dotfiles push
 ```
 
-## Installation on a new machine
+**Why isn't Oh My Zsh in the repo?**
+- Keeps the repo lightweight (a few KB instead of 50+ MB)
+- Oh My Zsh updates independently with `omz update`
+- No merge conflicts between your config and Oh My Zsh updates
+- Standard practice in the dotfiles community
 
-### 1. Clone the bare repository
+---
 
-```bash
-git clone --bare git@github.com:karchtho/dotfiles.git $HOME/.dotfiles
-```
+## Daily usage
 
-### 2. Set up the alias (temporary, until .zshrc is loaded)
-
-```bash
-alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
-```
-
-### 3. Checkout the files
-
-```bash
-dotfiles checkout
-```
-
-**What does `checkout` do?** It takes the files stored in your git repo and copies them to your home directory. So `.zshrc` from the repo becomes `~/.zshrc`, `bin/rcc` becomes `~/bin/rcc`, etc.
-
-**If you get errors** about existing files that would be overwritten:
-
-```bash
-# Create a backup folder
-mkdir -p ~/.dotfiles-backup
-
-# Move conflicting files (adjust as needed)
-mv ~/.zshrc ~/.dotfiles-backup/
-mv ~/bin/rcc ~/.dotfiles-backup/
-
-# Try again
-dotfiles checkout
-```
-
-### 4. Configure git to hide untracked files
-
-```bash
-dotfiles config --local status.showUntrackedFiles no
-```
-
-Without this, `dotfiles status` would list every file in your home directory.
-
-### 5. Load your config
-
-```bash
-source ~/.zshrc
-```
-
-## First-time setup (fresh Ubuntu)
-
-If Zsh and Oh My Zsh aren't installed yet:
-
-```bash
-# Run the setup script
-chmod +x ~/setup-zsh.sh
-./setup-zsh.sh
-
-# Restart your shell
-exec zsh
-```
-
-Powerlevel10k's configuration wizard will launch automatically.
-
-## Adding new files
-
+### Adding new files
 ```bash
 dotfiles add ~/.some-config
 dotfiles commit -m "added some-config"
 dotfiles push
 ```
 
-## Useful commands
-
+### Useful commands
 | Command | Description |
 |---------|-------------|
 | `dotfiles status` | See what's changed |
@@ -105,6 +115,8 @@ dotfiles push
 | `dotfiles commit -m "msg"` | Commit changes |
 | `dotfiles push` | Push to GitHub |
 | `dotfiles pull` | Pull latest changes |
+
+---
 
 ## Aliases cheatsheet
 
