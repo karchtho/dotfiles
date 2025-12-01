@@ -1,56 +1,87 @@
 #!/bin/bash
 
-echo "🚀 Setting up dotfiles + Zsh environment..."
+echo "🚀 Installation de ZSH + Oh My Zsh + Powerlevel10k + Dotfiles"
+echo "=================================================="
 
-# Install Zsh if needed
-if ! command -v zsh &> /dev/null; then
-    echo "📦 Installing Zsh..."
-    sudo apt update
-    sudo apt install -y zsh git curl
-fi
+# [1/7] Install dependencies
+echo "[1/7] Installation de zsh, curl, git..."
+sudo apt update
+sudo apt install -y zsh curl git
 
-# Install Oh My Zsh
+# [2/7] Install Oh My Zsh
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
-    echo "📦 Installing Oh My Zsh..."
+    echo "[2/7] Installation d'Oh My Zsh..."
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+else
+    echo "[2/7] Oh My Zsh déjà installé, skip..."
 fi
 
-# Install Powerlevel10k
+# [3/7] Install Powerlevel10k
+echo "[3/7] Installation de Powerlevel10k..."
 if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]; then
-    echo "🎨 Installing Powerlevel10k..."
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+else
+    echo "  Powerlevel10k déjà installé, skip..."
 fi
 
-# Install zsh plugins
-echo "🔌 Installing Zsh plugins..."
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions 2>/dev/null || true
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting 2>/dev/null || true
+# [4/7] Install zsh plugins
+echo "[4/7] Installation des plugins..."
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions 2>/dev/null || echo "  zsh-autosuggestions déjà installé"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting 2>/dev/null || echo "  zsh-syntax-highlighting déjà installé"
 
-# Clone dotfiles
+# [5/7] Clone dotfiles repo (bare)
 if [ ! -d "$HOME/.dotfiles" ]; then
-    echo "📥 Cloning dotfiles..."
-    git clone --bare git@github.com:karchtho/dotfiles.git $HOME/.dotfiles
-    
-    # Create alias temporarily
-    alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
+    echo "[5/7] Clonage du repo dotfiles..."
     
     # Backup existing files
     mkdir -p ~/.dotfiles-backup
+    [ -f ~/.zshrc ] && mv ~/.zshrc ~/.dotfiles-backup/
+    [ -f ~/.aliases ] && mv ~/.aliases ~/.dotfiles-backup/
+    [ -f ~/.p10k.zsh ] && mv ~/.p10k.zsh ~/.dotfiles-backup/
+    
+    # Clone bare repo
+    git clone --bare git@github.com:karchtho/dotfiles.git $HOME/.dotfiles
+    
+    # Define alias temporarily
+    function dotfiles {
+        git --git-dir=$HOME/.dotfiles --work-tree=$HOME $@
+    }
     
     # Checkout files
-    echo "✅ Checking out dotfiles..."
-    git --git-dir=$HOME/.dotfiles --work-tree=$HOME checkout 2>&1 | grep -E "\s+\." | awk '{print $1}' | xargs -I{} mv {} ~/.dotfiles-backup/{}
-    git --git-dir=$HOME/.dotfiles --work-tree=$HOME checkout
+    dotfiles checkout 2>&1 | grep -E "\s+\." | awk '{print $1}' | xargs -I{} mv {} ~/.dotfiles-backup/{} 2>/dev/null || true
+    dotfiles checkout
     
     # Configure repo
-    git --git-dir=$HOME/.dotfiles --work-tree=$HOME config --local status.showUntrackedFiles no
+    dotfiles config --local status.showUntrackedFiles no
+    
+    echo "  ✅ Dotfiles clonés et installés"
+else
+    echo "[5/7] Dotfiles déjà installés, skip..."
 fi
 
-# Set Zsh as default shell
+# [6/7] Create bin directory if needed
+echo "[6/7] Configuration des répertoires..."
+mkdir -p ~/bin
+
+# [7/7] Set Zsh as default shell
+echo "[7/7] Configuration de zsh comme shell par défaut..."
 if [ "$SHELL" != "$(which zsh)" ]; then
-    echo "🐚 Setting Zsh as default shell..."
     chsh -s $(which zsh)
 fi
 
-echo "✨ Setup complete!"
-echo "Run 'exec zsh' to start using your new config"
+echo "=================================================="
+echo "✅ Installation terminée !"
+echo ""
+echo "📋 Ce qui a été installé :"
+echo "  • Zsh (shell par défaut)"
+echo "  • Oh My Zsh"
+echo "  • Powerlevel10k (thème)"
+echo "  • zsh-autosuggestions"
+echo "  • zsh-syntax-highlighting"
+echo "  • Tes dotfiles personnalisés"
+echo ""
+echo "⚠  IMPORTANT :"
+echo "  1. Redémarre ton terminal ou tape : exec zsh"
+echo "  2. L'assistant Powerlevel10k va se lancer automatiquement"
+echo "  3. Installe une Nerd Font pour les icônes :"
+echo "     https://github.com/romkatv/powerlevel10k#fonts"
