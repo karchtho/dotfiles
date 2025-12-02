@@ -56,3 +56,7 @@ alias f2b='sudo fail2ban-client status sshd'
 
 #QOL
 alias cat='batcat'
+
+#VSCode projects
+alias ang-portfolio='code --remote ssh-remote+vmCDA /home/ubuntu/projects/protfolio-v2'
+alias react-pizzeria='code --remote ssh-remote+vmCDA /home/ubuntu/react-sofiane/pizzeria-v2'
