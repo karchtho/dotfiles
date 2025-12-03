@@ -27,6 +27,8 @@ alias gf='git fetch'
 alias gb='git branch'
 alias gco='git checkout'
 alias gcb='git checkout -b'
+alias gsw='git switch'
+alias gswc='git switch -c'
 alias gm='git merge'
 alias gr='git rebase'
 alias gri='git rebase -i'
@@ -60,3 +62,32 @@ alias cat='batcat'
 #VSCode projects
 alias ang-portfolio='code --remote ssh-remote+vmCDA /home/ubuntu/projects/protfolio-v2'
 alias react-pizzeria='code --remote ssh-remote+vmCDA /home/ubuntu/react-sofiane/pizzeria-v2'
+
+##################
+# Tree utilities #
+##################
+
+# Ignores gitignored files
+alias tgit='tree -I "$(cat .gitignore | grep -v "^#" | grep -v "^$" | tr "\n" "|" | sed "s/|$//")"'
+
+# Pour Angular
+alias tang='tree -L 3 -I "node_modules|dist|.angular|coverage|.nx"'
+alias tangc='tree -L 2 -d -I "node_modules|dist|.angular"'  # Directories only, cleaner
+
+# Pour Express
+alias texp='tree -L 3 -I "node_modules|dist|build|coverage"'
+
+# Pour ton projet full-stack (Angular + Express)
+alias tfull='tree -L 2 -I "node_modules|dist|.angular|coverage|build|*.log"'
+alias tclean='tree -L 3 -ah -I "node_modules|dist|.angular|coverage|build|.nx|.git|*.log|*.lock" --dirsfirst'
+
+# Pour voir uniquement la structure importante
+alias tsrc='tree -L 4 -d -I "node_modules|dist" src/'
+
+# Pour compter les fichiers sans le bruit
+alias tcount='tree -I "node_modules|dist|.angular|coverage" | tail -1'
+
+# Voir uniquement les composants/services
+alias tng-components='tree src/app -P "*.component.ts|*.service.ts" -I "node_modules|*.spec.ts"'
+# Structure sans les fichiers de test
+alias tno-spec='tree -I "node_modules|dist|*.spec.ts|*.spec.js"'
