@@ -99,8 +99,8 @@ alias tno-spec='tree -I "node_modules|dist|*.spec.ts|*.spec.js"'
 # ============================================================================
 
 # Base docker-compose command (dev environment)
-alias dc='docker-compose -f docker-compose.dev.yml'
-alias dcp='docker-compose -f docker-compose.prod.yml'
+alias dc='docker compose -f docker-compose.dev.yml'
+alias dcp='docker compose -f docker-compose.prod.yml'
 
 # ---------------------------------------------------------------------------
 # Quick start/stop
