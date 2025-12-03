@@ -91,3 +91,80 @@ alias tcount='tree -I "node_modules|dist|.angular|coverage" | tail -1'
 alias tng-components='tree src/app -P "*.component.ts|*.service.ts" -I "node_modules|*.spec.ts"'
 # Structure sans les fichiers de test
 alias tno-spec='tree -I "node_modules|dist|*.spec.ts|*.spec.js"'
+
+
+
+# ============================================================================
+# DOCKER ALIASES - Portfolio Project
+# ============================================================================
+
+# Base docker-compose command (dev environment)
+alias dc='docker-compose -f docker-compose.dev.yml'
+alias dcp='docker-compose -f docker-compose.prod.yml'
+
+# ---------------------------------------------------------------------------
+# Quick start/stop
+# ---------------------------------------------------------------------------
+alias dup='dc up'                          # Start all services
+alias dupb='dc up --build'                 # Start + rebuild images
+alias dupd='dc up -d'                      # Start in background (detached)
+alias ddown='dc down'                      # Stop all services
+alias drestart='dc restart'                # Restart all services
+
+# ---------------------------------------------------------------------------
+# Nuclear options 🔥
+# ---------------------------------------------------------------------------
+alias dnuke='dc down -v --remove-orphans'  # Stop + remove volumes + orphans
+alias dpurge='dc down -v --rmi all --remove-orphans'  # DESTROY EVERYTHING
+alias dclean='docker system prune -af --volumes'      # Clean all Docker
+
+# ---------------------------------------------------------------------------
+# Rebuild specific services
+# ---------------------------------------------------------------------------
+alias dbuild='dc build'                    # Rebuild all images
+alias dbuildf='dc build --no-cache'        # Rebuild without cache
+alias drebuild='dc down && dc up --build'  # Full restart with rebuild
+
+# ---------------------------------------------------------------------------
+# Logs
+# ---------------------------------------------------------------------------
+alias dlogs='dc logs -f'                   # Follow all logs
+alias dlogsf='dc logs -f frontend'         # Frontend logs only
+alias dlogsb='dc logs -f backend'          # Backend logs only
+alias dlogsm='dc logs -f mysql'            # MySQL logs only
+
+# ---------------------------------------------------------------------------
+# Service management
+# ---------------------------------------------------------------------------
+alias dps='dc ps'                          # List running containers
+alias dstop='dc stop'                      # Stop without removing
+alias dstart='dc start'                    # Start stopped containers
+
+# ---------------------------------------------------------------------------
+# Enter containers (exec bash)
+# ---------------------------------------------------------------------------
+alias dsh='dc exec'                        # Base exec command
+alias dshf='dc exec frontend sh'           # Enter frontend container
+alias dshb='dc exec backend sh'            # Enter backend container
+alias dshm='dc exec mysql mysql -u root -p' # Enter MySQL CLI
+
+# ---------------------------------------------------------------------------
+# Database helpers
+# ---------------------------------------------------------------------------
+alias dmysql='dc exec mysql mysql -u portfolio_user -pSecurePassword123! portfolio_db'
+alias ddump='dc exec mysql mysqldump -u root -p portfolio_db > backup.sql'
+alias drestore='dc exec -T mysql mysql -u root -p portfolio_db < backup.sql'
+
+# ---------------------------------------------------------------------------
+# Combined workflows
+# ---------------------------------------------------------------------------
+alias dfresh='dnuke && dupb'               # Fresh start (nuke + rebuild)
+alias ddev='dupd && dlogs'                 # Start detached + follow logs
+alias dstatus='dps && docker stats --no-stream' # Status + resource usage
+
+# ---------------------------------------------------------------------------
+# Production shortcuts
+# ---------------------------------------------------------------------------
+alias dupprod='dcp up -d'                  # Start prod in background
+alias ddownprod='dcp down'                 # Stop prod
+alias dlogsprod='dcp logs -f'              # Prod logs
