@@ -30,10 +30,7 @@ plugins=(
 # Charge Oh My Zsh
 source $ZSH/oh-my-zsh.sh
 
-# Load aliases from dedicated file
-if [ -f ~/.aliases ]; then
-  source ~/.aliases
-fi
+
 
 # Autocompletion
 autoload -Uz compinit
