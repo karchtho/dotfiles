@@ -1,0 +1,8 @@
+.*
+*
+!bin
+!.aliases
+!.p10k.zsh
+!.zshrc
+!README.md
+!.gitignore
