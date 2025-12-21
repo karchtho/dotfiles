@@ -46,12 +46,17 @@ alias ports='sudo lsof -i -P -n | grep LISTEN'
 alias myip='curl -s ifconfig.me'
 alias update='sudo apt update && sudo apt upgrade -y'
 alias df='df -h'
+# Summarize device usage of the set of FILEs, recursively for directories.
+# Human readable
 alias du='du -h'
 alias free='free -h'
 
 # Quick edit
 alias zshrc='nano ~/.zshrc'
 alias aliases='nano ~/.aliases'
+
+# Display search in aliases
+alias findalias='cat ~/.aliases | grep'
 
 #Serveur
 alias f2b='sudo fail2ban-client status sshd'
