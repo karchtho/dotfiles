@@ -65,8 +65,9 @@ alias f2b='sudo fail2ban-client status sshd'
 alias cat='batcat'
 
 #VSCode projects
-alias ang-portfolio='code --remote ssh-remote+vmCDA /home/ubuntu/projects/protfolio-v2'
+alias ang-portfolio='code --remote ssh-remote+vmCDA /home/ubuntu/projects/portfolio-v2'
 alias react-pizzeria='code --remote ssh-remote+vmCDA /home/ubuntu/react-sofiane/pizzeria-v2'
+alias react-cda='code --remote ssh-remote+vmCDA /home/ubuntu/projects/projet-cda'
 
 ##################
 # Tree utilities #
