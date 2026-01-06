@@ -62,11 +62,12 @@ alias findalias='cat ~/.aliases | grep'
 alias f2b='sudo fail2ban-client status sshd'
 
 #QOL
-alias cat='batcat'
+alias vault='cat /media/thomas/KeePassUSB/blablabla | xclip -selection clipboard'
 
 #VSCode projects
-alias ang-portfolio='code --remote ssh-remote+vmCDA /home/ubuntu/projects/protfolio-v2'
+alias ang-portfolio='code --remote ssh-remote+vmCDA /home/ubuntu/projects/portfolio-v2'
 alias react-pizzeria='code --remote ssh-remote+vmCDA /home/ubuntu/react-sofiane/pizzeria-v2'
+alias react-cda='code --remote ssh-remote+vmCDA /home/ubuntu/projects/projet-cda'
 
 ##################
 # Tree utilities #
