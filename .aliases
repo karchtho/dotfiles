@@ -68,6 +68,7 @@ alias vault='cat /media/thomas/KeePassUSB/blablabla | xclip -selection clipboard
 alias ang-portfolio='code --remote ssh-remote+vmCDA /home/ubuntu/projects/portfolio-v2'
 alias react-pizzeria='code --remote ssh-remote+vmCDA /home/ubuntu/react-sofiane/pizzeria-v2'
 alias react-cda='code --remote ssh-remote+vmCDA /home/ubuntu/projects/projet-cda'
+alias marketplace='code --remote ssh-remote+vmCDA /home/ubuntu/projects/my-claude-marketplace'
 
 ##################
 # Tree utilities #
