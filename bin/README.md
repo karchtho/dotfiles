@@ -33,26 +33,29 @@ Generate production-ready React code with intelligent naming conventions, nested
 mkdir -p ~/bin
 ```
 
-### Step 2: Download the rc script
+### Step 2: Get the rc script
 
-**Option A: Direct download (if hosted online)**
+**Option A: Download directly to ~/bin**
 ```bash
-curl -o ~/bin/rc https://raw.githubusercontent.com/YOUR_USERNAME/REPO_NAME/main/rc
-```
-
-**Option B: Manual copy**
-```bash
-# Copy the rc file to ~/bin
-cp /path/to/rc ~/bin/rc
-```
-
-### Step 3: Make it executable
-
-```bash
+curl -o ~/bin/rc https://raw.githubusercontent.com/YOUR_USERNAME/REPO_NAME/main/bin/rc
 chmod +x ~/bin/rc
 ```
 
-### Step 4: Add ~/bin to PATH (if not already there)
+**Option B: Clone the repository (preserves executable permissions)**
+```bash
+git clone https://github.com/YOUR_USERNAME/REPO_NAME.git
+cp REPO_NAME/bin/rc ~/bin/rc
+# No chmod needed - git preserves executable bit
+```
+
+**Option C: Manual download**
+```bash
+# Download rc file manually, then:
+mv ~/Downloads/rc ~/bin/rc
+chmod +x ~/bin/rc
+```
+
+### Step 3: Add ~/bin to PATH (if not already there)
 
 **Check if ~/bin is in your PATH:**
 ```bash
@@ -73,7 +76,7 @@ echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-### Step 5: Verify installation
+### Step 4: Verify installation
 
 ```bash
 rc --version
