@@ -1,6 +1,7 @@
 .*
 *
 !bin
+!bin/**
 !.aliases
 !.p10k.zsh
 !.zshrc
