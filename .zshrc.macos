@@ -56,7 +56,9 @@ export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
 # Powerlevel10k configuration (macOS-specific)
-[[ ! -f ~/.p10k.zsh.macos ]] || source ~/.p10k.zsh.macos
+# Create symlink if it doesn't exist, so p10k configure works
+[[ -L ~/.p10k.zsh ]] || ln -s ~/.p10k.zsh.macos ~/.p10k.zsh
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # Source aliases
 [ -f ~/.aliases ] && source ~/.aliases
