@@ -1,0 +1,53 @@
+# Linux-specific Zsh configuration
+# This file is sourced from .zshrc when on a Linux system
+
+# Path to Oh My Zsh installation
+export ZSH="$HOME/.oh-my-zsh"
+
+# Linux uses the standard robbyrussell theme by default
+ZSH_THEME="robbyrussell"
+
+# Plugins for Linux
+plugins=(
+  git
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  sudo
+  extract
+)
+
+# Source Oh My Zsh
+source $ZSH/oh-my-zsh.sh
+
+# Autocompletion
+autoload -Uz compinit
+compinit
+
+# Color for autosuggestions
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+
+# Syntax highlighting
+source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# NVM setup for Node.js
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Python setup
+export PATH="/usr/local/python3.14/bin:$PATH"
+alias python="python3.14"
+alias pip="pip3.14"
+
+# Linux-specific path for VM creation script
+export PATH="$HOME/bin/creation-vm-multipass-lamp:$PATH"
+
+# User scripts
+export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+# Source aliases
+[ -f ~/.aliases ] && source ~/.aliases
+
+# Dotfiles management
+alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'

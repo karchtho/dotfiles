@@ -3,7 +3,12 @@
 !bin
 !bin/**
 !.aliases
-!.p10k.zsh
+!.aliases.linux
+!.aliases.macos
 !.zshrc
+!.zshrc.linux
+!.zshrc.macos
+!.zprofile
+!.p10k.zsh.macos
 !README.md
 !.gitignore

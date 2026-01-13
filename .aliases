@@ -1,3 +1,6 @@
+# Shared aliases available on all platforms
+# Platform-specific aliases are loaded at the end based on OS
+
 # Navigation
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -42,12 +45,8 @@ alias gstp='git stash pop'
 alias cl='clear'
 alias h='history'
 alias reload='source ~/.zshrc'
-alias ports='sudo lsof -i -P -n | grep LISTEN'
 alias myip='curl -s ifconfig.me'
-alias update='sudo apt update && sudo apt upgrade -y'
 alias df='df -h'
-# Summarize device usage of the set of FILEs, recursively for directories.
-# Human readable
 alias du='du -h'
 alias free='free -h'
 
@@ -57,18 +56,6 @@ alias aliases='nano ~/.aliases'
 
 # Display search in aliases
 alias findalias='cat ~/.aliases | grep'
-
-#Serveur
-alias f2b='sudo fail2ban-client status sshd'
-
-#QOL
-alias vault='cat /media/thomas/KeePassUSB/blablabla | xclip -selection clipboard'
-
-#VSCode projects
-alias ang-portfolio='code --remote ssh-remote+vmCDA /home/ubuntu/projects/portfolio-v2'
-alias react-pizzeria='code --remote ssh-remote+vmCDA /home/ubuntu/react-sofiane/pizzeria-v2'
-alias react-cda='code --remote ssh-remote+vmCDA /home/ubuntu/projects/projet-cda'
-alias marketplace='code --remote ssh-remote+vmCDA /home/ubuntu/projects/my-claude-marketplace'
 
 ##################
 # Tree utilities #
@@ -99,8 +86,6 @@ alias tng-components='tree src/app -P "*.component.ts|*.service.ts" -I "node_mod
 # Structure sans les fichiers de test
 alias tno-spec='tree -I "node_modules|dist|*.spec.ts|*.spec.js"'
 
-
-
 # ============================================================================
 # DOCKER ALIASES - Portfolio Project
 # ============================================================================
@@ -109,69 +94,64 @@ alias tno-spec='tree -I "node_modules|dist|*.spec.ts|*.spec.js"'
 alias dc='docker compose -f docker-compose.dev.yml'
 alias dcp='docker compose -f docker-compose.prod.yml'
 
-# ---------------------------------------------------------------------------
 # Quick start/stop
-# ---------------------------------------------------------------------------
 alias dup='dc up'                          # Start all services
 alias dupb='dc up --build'                 # Start + rebuild images
 alias dupd='dc up -d'                      # Start in background (detached)
 alias ddown='dc down'                      # Stop all services
 alias drestart='dc restart'                # Restart all services
 
-# ---------------------------------------------------------------------------
-# Nuclear options 🔥
-# ---------------------------------------------------------------------------
+# Nuclear options
 alias dnuke='dc down -v --remove-orphans'  # Stop + remove volumes + orphans
 alias dpurge='dc down -v --rmi all --remove-orphans'  # DESTROY EVERYTHING
 alias dclean='docker system prune -af --volumes'      # Clean all Docker
 
-# ---------------------------------------------------------------------------
 # Rebuild specific services
-# ---------------------------------------------------------------------------
 alias dbuild='dc build'                    # Rebuild all images
 alias dbuildf='dc build --no-cache'        # Rebuild without cache
 alias drebuild='dc down && dc up --build'  # Full restart with rebuild
 
-# ---------------------------------------------------------------------------
 # Logs
-# ---------------------------------------------------------------------------
 alias dlogs='dc logs -f'                   # Follow all logs
 alias dlogsf='dc logs -f frontend'         # Frontend logs only
 alias dlogsb='dc logs -f backend'          # Backend logs only
 alias dlogsm='dc logs -f mysql'            # MySQL logs only
 
-# ---------------------------------------------------------------------------
 # Service management
-# ---------------------------------------------------------------------------
 alias dps='dc ps'                          # List running containers
 alias dstop='dc stop'                      # Stop without removing
 alias dstart='dc start'                    # Start stopped containers
 
-# ---------------------------------------------------------------------------
 # Enter containers (exec bash)
-# ---------------------------------------------------------------------------
 alias dsh='dc exec'                        # Base exec command
 alias dshf='dc exec frontend sh'           # Enter frontend container
 alias dshb='dc exec backend sh'            # Enter backend container
 alias dshm='dc exec mysql mysql -u root -p' # Enter MySQL CLI
 
-# ---------------------------------------------------------------------------
 # Database helpers
-# ---------------------------------------------------------------------------
 alias dmysql='dc exec mysql mysql -u portfolio_user -pSecurePassword123! portfolio_db'
 alias ddump='dc exec mysql mysqldump -u root -p portfolio_db > backup.sql'
 alias drestore='dc exec -T mysql mysql -u root -p portfolio_db < backup.sql'
 
-# ---------------------------------------------------------------------------
 # Combined workflows
-# ---------------------------------------------------------------------------
 alias dfresh='dnuke && dupb'               # Fresh start (nuke + rebuild)
 alias ddev='dupd && dlogs'                 # Start detached + follow logs
 alias dstatus='dps && docker stats --no-stream' # Status + resource usage
 
-# ---------------------------------------------------------------------------
 # Production shortcuts
-# ---------------------------------------------------------------------------
 alias dupprod='dcp up -d'                  # Start prod in background
 alias ddownprod='dcp down'                 # Stop prod
 alias dlogsprod='dcp logs -f'              # Prod logs
+
+# ============================================================================
+# Platform-specific aliases
+# ============================================================================
+
+# Detect OS and source appropriate aliases
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # macOS-specific aliases
+  [ -f ~/.aliases.macos ] && source ~/.aliases.macos
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  # Linux-specific aliases
+  [ -f ~/.aliases.linux ] && source ~/.aliases.linux
+fi

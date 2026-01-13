@@ -1,0 +1,10 @@
+# macOS-specific aliases
+# These aliases are only available on macOS systems
+
+# Package management
+alias update='brew update && brew upgrade'
+
+# Network utilities
+alias ports='lsof -i -P -n | grep LISTEN'
+
+# macOS-specific utilities can go here

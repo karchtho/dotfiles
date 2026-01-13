@@ -1,0 +1,23 @@
+# Linux-specific aliases
+# These aliases are only available on Linux systems
+
+# Package management
+alias update='sudo apt update && sudo apt upgrade -y'
+
+# Network utilities
+alias ports='sudo lsof -i -P -n | grep LISTEN'
+
+# Better cat replacement (Debian/Ubuntu uses batcat)
+alias cat='batcat'
+
+# Security/Server management
+alias f2b='sudo fail2ban-client status sshd'
+
+# QOL
+alias vault='cat /media/thomas/KeePassUSB/blablabla | xclip -selection clipboard'
+
+# VSCode remote SSH aliases for development
+alias ang-portfolio='code --remote ssh-remote+vmCDA /home/ubuntu/projects/portfolio-v2'
+alias react-pizzeria='code --remote ssh-remote+vmCDA /home/ubuntu/react-sofiane/pizzeria-v2'
+alias react-cda='code --remote ssh-remote+vmCDA /home/ubuntu/projects/projet-cda'
+alias marketplace='code --remote ssh-remote+vmCDA /home/ubuntu/projects/my-claude-marketplace'
