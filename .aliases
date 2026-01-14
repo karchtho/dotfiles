@@ -40,7 +40,10 @@ alias gd='git diff'
 alias gds='git diff --staged'
 alias gst='git stash'
 alias gstp='git stash pop'
-
+alias feature='f() { git fetch origin develop && git checkout -b feature/$1 origin/develop; }; f'
+alias fix='f() { git fetch origin develop && git checkout -b fix/$1 origin/develop; }; f'
+alias chore='f() { git fetch origin develop && git checkout -b chore/$1 origin/develop; }; f'
+alias hotfix='f() { git fetch origin main && git checkout -b hotfix/$1 origin/main; }; f'
 # Merge requests
 alias mreview='f() { 
   if [ -z "$1" ]; then 
