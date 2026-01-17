@@ -79,91 +79,103 @@ alias aliases='nano ~/.aliases'
 # Display search in aliases
 alias findalias='cat ~/.aliases | grep'
 
-##################
-# Tree utilities #
-##################
-
-# Ignores gitignored files
-alias tgit='tree -I "$(cat .gitignore | grep -v "^#" | grep -v "^$" | tr "\n" "|" | sed "s/|$//")"'
-
-# Pour Angular
-alias tang='tree -L 3 -I "node_modules|dist|.angular|coverage|.nx"'
-alias tangc='tree -L 2 -d -I "node_modules|dist|.angular"'  # Directories only, cleaner
-
-# Pour Express
-alias texp='tree -L 3 -I "node_modules|dist|build|coverage"'
-
-# Pour ton projet full-stack (Angular + Express)
-alias tfull='tree -L 2 -I "node_modules|dist|.angular|coverage|build|*.log"'
-alias tclean='tree -L 3 -ah -I "node_modules|dist|.angular|coverage|build|.nx|.git|*.log|*.lock" --dirsfirst'
-
-# Pour voir uniquement la structure importante
-alias tsrc='tree -L 4 -d -I "node_modules|dist" src/'
-
-# Pour compter les fichiers sans le bruit
-alias tcount='tree -I "node_modules|dist|.angular|coverage" | tail -1'
-
-# Voir uniquement les composants/services
-alias tng-components='tree src/app -P "*.component.ts|*.service.ts" -I "node_modules|*.spec.ts"'
-# Structure sans les fichiers de test
-alias tno-spec='tree -I "node_modules|dist|*.spec.ts|*.spec.js"'
-
 # ============================================================================
-# DOCKER ALIASES - Portfolio Project
+# TREE UTILITIES - Universal & Practical
 # ============================================================================
 
-# Base docker-compose command (dev environment)
+# Basic tree with sane defaults
+alias t='tree -L 2'                        # Quick 2-level view
+alias t3='tree -L 3'                       # 3-level view
+alias ta='tree -a -L 2'                    # Include hidden files
+
+# Clean view (ignore common noise)
+alias tc='tree -L 3 -I "node_modules|dist|build|.git|coverage|*.log|.cache|vendor"'
+
+# Directory structure only (no files)
+alias td='tree -d -L 3'                    # Directories only
+alias tdc='tree -d -L 3 -I "node_modules|dist|build|.git|vendor"'
+
+# Respect .gitignore
+alias tg='tree -I "$(cat .gitignore 2>/dev/null | grep -v "^#" | grep -v "^$" | tr "\n" "|" | sed "s/|$//")"'
+
+# Count files (useful for checking project size)
+alias tcount='tree -I "node_modules|dist|build|.git|vendor" | tail -1'
+
+# Save tree to file (outputs to STRUCTURE.txt)
+alias tsave='tree -L 3 -I "node_modules|dist|build|.git|coverage|.cache|vendor|*.log" --dirsfirst --charset ascii -n -o STRUCTURE.txt && echo "✓ Tree saved to STRUCTURE.txt"'
+
+# Save with config files (outputs to STRUCTURE.txt)
+alias tsaveconfig='tree -L 2 -I "node_modules|dist|build|.git|coverage|vendor" --charset ascii -n -o STRUCTURE.txt && echo "✓ Tree with configs saved to STRUCTURE.txt"'
+
+# Save to custom filename: tsaveto FILENAME.txt
+tsaveto() {
+    tree -L 3 -I "node_modules|dist|build|.git|coverage|.cache|vendor|*.log" --dirsfirst --charset ascii -n -o "$1" && echo "✓ Tree saved to $1"
+}
+
+# ============================================================================
+# DOCKER CORE ALIASES - Single Container Management
+# ============================================================================
+
+# Container lifecycle
+alias drun='docker run'
+alias drunit='docker run -it --rm'         # Interactive + auto-remove
+alias dstart='docker start'
+alias dstop='docker stop'
+alias drm='docker rm'
+alias drmf='docker rm -f'                  # Force remove
+
+# List & inspect
+alias dps='docker ps'                      # Running containers
+alias dpsa='docker ps -a'                  # All containers
+alias dimg='docker images'                 # List images
+alias dvol='docker volume ls'              # List volumes
+
+# Execute & logs
+alias dex='docker exec -it'                # Enter running container
+alias dlogs='docker logs -f'               # Follow logs
+alias dinspect='docker inspect'            # Inspect container/image
+
+# Cleanup
+alias dprune='docker system prune -f'      # Clean stopped containers
+alias dprunea='docker system prune -af'    # Clean everything (aggressive)
+alias dvprune='docker volume prune -f'     # Clean unused volumes
+alias dimgrm='docker rmi'                  # Remove image
+
+# Quick combos for experimentation
+alias dtest='docker run -it --rm'          # Quick test container
+alias dbash='docker run -it --rm bash'     # Quick bash session
+
+# Database quick starts
+alias dpostgres='docker run --name postgres-test -e POSTGRES_PASSWORD=test -p 5432:5432 -d postgres'
+alias dmaria='docker run --name maria-test -e MYSQL_ROOT_PASSWORD=test -p 3306:3306 -d mariadb'
+alias dredis='docker run --name redis-test -p 6379:6379 -d redis'
+
+# Enter database containers
+alias dpsql='docker exec -it postgres-test psql -U postgres'
+alias dmysql='docker exec -it maria-test mysql -u root -ptest'
+
+# ============================================================================
+# DOCKER COMPOSE ALIASES - Project Management
+# ============================================================================
+
+# Use 'dc' prefix for compose, 'd' prefix for raw docker
 alias dc='docker compose -f docker-compose.dev.yml'
 alias dcp='docker compose -f docker-compose.prod.yml'
 
-# Quick start/stop
-alias dup='dc up'                          # Start all services
-alias dupb='dc up --build'                 # Start + rebuild images
-alias dupd='dc up -d'                      # Start in background (detached)
-alias ddown='dc down'                      # Stop all services
-alias drestart='dc restart'                # Restart all services
+alias dcup='dc up'
+alias dcupd='dc up -d'
+alias dcdown='dc down'
+alias dcbuild='dc build'
+alias dclogs='dc logs -f'
+alias dcps='dc ps'
 
-# Nuclear options
-alias dnuke='dc down -v --remove-orphans'  # Stop + remove volumes + orphans
-alias dpurge='dc down -v --rmi all --remove-orphans'  # DESTROY EVERYTHING
-alias dclean='docker system prune -af --volumes'      # Clean all Docker
+# Keep your nuclear options - they're great
+alias dcnuke='dc down -v --remove-orphans'
+alias dcpurge='dc down -v --rmi all --remove-orphans'
 
-# Rebuild specific services
-alias dbuild='dc build'                    # Rebuild all images
-alias dbuildf='dc build --no-cache'        # Rebuild without cache
-alias drebuild='dc down && dc up --build'  # Full restart with rebuild
-
-# Logs
-alias dlogs='dc logs -f'                   # Follow all logs
-alias dlogsf='dc logs -f frontend'         # Frontend logs only
-alias dlogsb='dc logs -f backend'          # Backend logs only
-alias dlogsm='dc logs -f mysql'            # MySQL logs only
-
-# Service management
-alias dps='dc ps'                          # List running containers
-alias dstop='dc stop'                      # Stop without removing
-alias dstart='dc start'                    # Start stopped containers
-
-# Enter containers (exec bash)
-alias dsh='dc exec'                        # Base exec command
-alias dshf='dc exec frontend sh'           # Enter frontend container
-alias dshb='dc exec backend sh'            # Enter backend container
-alias dshm='dc exec mysql mysql -u root -p' # Enter MySQL CLI
-
-# Database helpers
-alias dmysql='dc exec mysql mysql -u portfolio_user -pSecurePassword123! portfolio_db'
-alias ddump='dc exec mysql mysqldump -u root -p portfolio_db > backup.sql'
-alias drestore='dc exec -T mysql mysql -u root -p portfolio_db < backup.sql'
-
-# Combined workflows
-alias dfresh='dnuke && dupb'               # Fresh start (nuke + rebuild)
-alias ddev='dupd && dlogs'                 # Start detached + follow logs
-alias dstatus='dps && docker stats --no-stream' # Status + resource usage
-
-# Production shortcuts
-alias dupprod='dcp up -d'                  # Start prod in background
-alias ddownprod='dcp down'                 # Stop prod
-alias dlogsprod='dcp logs -f'              # Prod logs
+# Project-specific exec
+alias dcshf='dc exec frontend sh'
+alias dcshb='dc exec backend sh'
 
 # ============================================================================
 # Platform-specific aliases
