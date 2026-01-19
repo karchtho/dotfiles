@@ -23,9 +23,25 @@ SCRIPT_NAME="rc"
 # SECTION 2: UTILITY FUNCTIONS
 #==============================================================================
 
-# Convert kebab-case to PascalCase
+# Convert kebab-case to PascalCase (cross-platform compatible)
 kebab_to_pascal() {
-    echo "$1" | sed -r 's/(^|-)([a-z])/\U\2/g'
+    local input="$1"
+    local output=""
+    local capitalize_next=true
+
+    for (( i=0; i<${#input}; i++ )); do
+        char="${input:$i:1}"
+        if [ "$char" = "-" ]; then
+            capitalize_next=true
+        elif [ "$capitalize_next" = true ]; then
+            output+="$(echo "$char" | tr '[:lower:]' '[:upper:]')"
+            capitalize_next=false
+        else
+            output+="$char"
+        fi
+    done
+
+    echo "$output"
 }
 
 # Convert kebab-case to camelCase
@@ -36,9 +52,24 @@ kebab_to_camel() {
     echo "$(echo "${pascal:0:1}" | tr '[:upper:]' '[:lower:]')${pascal:1}"
 }
 
-# Convert PascalCase to kebab-case
+# Convert PascalCase to kebab-case (cross-platform compatible)
 pascal_to_kebab() {
-    echo "$1" | sed -r 's/([A-Z])/-\L\1/g' | sed 's/^-//'
+    local input="$1"
+    local output=""
+
+    for (( i=0; i<${#input}; i++ )); do
+        char="${input:$i:1}"
+        if [[ "$char" =~ [A-Z] ]]; then
+            if [ $i -gt 0 ]; then
+                output+="-"
+            fi
+            output+="$(echo "$char" | tr '[:upper:]' '[:lower:]')"
+        else
+            output+="$char"
+        fi
+    done
+
+    echo "$output"
 }
 
 # Parse nested path (e.g., "atoms/button" → "atoms" + "button")
