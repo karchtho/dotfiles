@@ -75,9 +75,14 @@ alias free='free -h'
 # Quick edit
 alias zshrc='nano ~/.zshrc'
 alias aliases='nano ~/.aliases'
-
-# Display search in aliases
 alias findalias='cat ~/.aliases | grep'
+
+#Serveur
+alias f2b='sudo fail2ban-client status'
+
+#VSCode projects
+alias ang-portfolio='code --remote ssh-remote+vmCDA /home/ubuntu/projects/protfolio-v2'
+
 
 # ============================================================================
 # TREE UTILITIES - Universal & Practical
