@@ -166,9 +166,12 @@ alias dmysql='docker exec -it maria-test mysql -u root -ptest'
 # Use 'dc' prefix for compose, 'd' prefix for raw docker
 alias dc='docker compose -f docker-compose.dev.yml'
 alias dcp='docker compose -f docker-compose.prod.yml'
+alias do='docker compose -f docker-compose.yml -f docker-compose.dev.yml'
 
 alias dcup='dc up'
 alias dcupd='dc up -d'
+alias dcstop='dc stop'
+alias dcstart='dc start'
 alias dcdown='dc down'
 alias dcbuild='dc build'
 alias dclogs='dc logs -f'
@@ -181,6 +184,21 @@ alias dcpurge='dc down -v --rmi all --remove-orphans'
 # Project-specific exec
 alias dcshf='dc exec frontend sh'
 alias dcshb='dc exec backend sh'
+
+# Override pattern: base + dev overrides (docker-compose.yml + docker-compose.dev.yml)
+# 'do' is already defined above — these are its sub-commands
+alias doup='do up'
+alias doupd='do up -d'
+alias dostop='do stop'
+alias dostart='do start'
+alias dodown='do down'
+alias dobuild='do build'
+alias dologs='do logs -f'
+alias dops='do ps'
+alias donuke='do down -v --remove-orphans'
+alias dopurge='do down -v --rmi all --remove-orphans'
+alias doshf='do exec frontend sh'
+alias doshb='do exec backend sh'
 
 # ============================================================================
 # Platform-specific aliases

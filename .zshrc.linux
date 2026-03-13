@@ -4,7 +4,6 @@
 # Path to Oh My Zsh installation
 export ZSH="$HOME/.oh-my-zsh"
 
-# Linux uses the standard robbyrussell theme by default
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Plugins for Linux
