@@ -83,6 +83,11 @@ alias f2b='sudo fail2ban-client status'
 #VSCode projects
 alias ang-portfolio='code --remote ssh-remote+vmCDA /home/ubuntu/projects/protfolio-v2'
 
+# ============================================================================
+# Server VPS OVH UTILITIES
+# ============================================================================
+alias cookly-cron='docker exec -it cookly-prod-backend-1 tail -f logs/cron.log'
+alias cookly-logs='docker exec -it cookly-prod-backend-1 tail -f logs/requests.log'
 
 # ============================================================================
 # TREE UTILITIES - Universal & Practical
