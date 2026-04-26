@@ -24,3 +24,14 @@ else
 fi
 
 export GITLAB_HOME=/srv/gitlab
+
+# bun completions
+fpath=("$HOME/.bun" $fpath)
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+alias claude-mem='/Users/thomas/.bun/bin/bun "/Users/thomas/.claude/plugins/cache/thedotmack/claude-mem/10.6.2/scripts/worker-service.cjs"'
+
+

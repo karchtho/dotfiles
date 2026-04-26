@@ -19,15 +19,8 @@ plugins=(
 # Source Oh My Zsh
 source $ZSH/oh-my-zsh.sh
 
-# Autocompletion
-autoload -Uz compinit
-compinit
-
 # Color for autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-
-# Syntax highlighting
-source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # NVM setup for Node.js
 export NVM_DIR="$HOME/.nvm"
@@ -35,7 +28,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # Angular CLI autocompletion (loaded after nvm so ng is available)
-source <(ng completion script) 2>/dev/null
+command -v ng &>/dev/null && source <(ng completion script 2>/dev/null)
 
 # Python setup
 export PATH="/usr/local/python3.14/bin:$PATH"
