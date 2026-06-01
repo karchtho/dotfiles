@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Bootstrap: installs MesloLGS NF font and Oh-My-Posh on macOS and Linux.
+# Bootstrap: installs MesloLGS NF font on macOS and Linux.
+# p10k uses this font for the zsh prompt.
+# Oh-My-Posh (PowerShell prompt) is Windows-only — see bin/bootstrap.ps1.
 # Run once after cloning your dotfiles on a new machine.
 set -euo pipefail
 
-# ── Font ─────────────────────────────────────────────────────────────────────
 install_font_macos() {
     if brew list --cask font-meslo-lg-nerd-font &>/dev/null; then
         echo "  MesloLGS NF already installed."
@@ -31,40 +32,14 @@ install_font_linux() {
     echo "  Font installed."
 }
 
-# ── Oh-My-Posh ───────────────────────────────────────────────────────────────
-install_omp_macos() {
-    if command -v oh-my-posh &>/dev/null; then
-        echo "  oh-my-posh already installed."
-        return
-    fi
-    echo "  Installing oh-my-posh..."
-    brew install jandedobbeleer/oh-my-posh/oh-my-posh
-}
-
-install_omp_linux() {
-    if command -v oh-my-posh &>/dev/null; then
-        echo "  oh-my-posh already installed."
-        return
-    fi
-    echo "  Installing oh-my-posh..."
-    curl -s https://ohmyposh.dev/install.sh | bash -s -- -d "$HOME/.local/bin"
-}
-
-# ── Main ─────────────────────────────────────────────────────────────────────
 case "$(uname)" in
     Darwin)
-        echo "==> macOS detected"
-        echo "--> Font"
+        echo "==> macOS"
         install_font_macos
-        echo "--> Oh-My-Posh"
-        install_omp_macos
         ;;
     Linux)
-        echo "==> Linux detected"
-        echo "--> Font"
+        echo "==> Linux"
         install_font_linux
-        echo "--> Oh-My-Posh"
-        install_omp_linux
         ;;
     *)
         echo "Unknown OS — see README for manual steps." >&2
@@ -73,4 +48,4 @@ case "$(uname)" in
 esac
 
 echo ""
-echo "Done. Next: set your terminal font to 'MesloLGS NF' (see README)."
+echo "Done. Set your terminal font to 'MesloLGS NF' (see README)."
