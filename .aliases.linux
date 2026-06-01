@@ -7,8 +7,13 @@ alias update='sudo apt update && sudo apt upgrade -y'
 # Network utilities
 alias ports='sudo lsof -i -P -n | grep LISTEN'
 
-# Better cat replacement (Debian/Ubuntu uses batcat)
-alias cat='batcat'
+# Better cat replacement — batcat (Debian/Ubuntu) or bat (Fedora/Arch/brew)
+# Falls back to native cat if neither is installed
+if command -v batcat &>/dev/null; then
+  alias cat='batcat'
+elif command -v bat &>/dev/null; then
+  alias cat='bat'
+fi
 
 # Security/Server management
 alias f2b='sudo fail2ban-client status sshd'

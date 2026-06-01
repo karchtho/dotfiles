@@ -66,7 +66,7 @@ alias prreview='f() {
 # Shortcuts
 alias cl='clear'
 alias h='history'
-alias reload='source ~/.zshrc'
+alias reload='exec zsh'
 alias myip='curl -s ifconfig.me'
 alias df='df -h'
 alias du='du -h'

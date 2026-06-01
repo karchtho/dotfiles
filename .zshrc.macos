@@ -27,8 +27,12 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-# Angular CLI autocompletion (loaded after nvm so ng is available)
-command -v ng &>/dev/null && source <(ng completion script 2>/dev/null)
+# Angular CLI autocompletion — only source if ng completion script exits cleanly
+# (some versions print errors to stdout which would break sourcing)
+if command -v ng &>/dev/null; then
+  _ng_completion=$(ng completion script 2>/dev/null) && source <(echo "$_ng_completion")
+  unset _ng_completion
+fi
 
 # Python setup
 export PATH="/usr/local/python3.14/bin:$PATH"

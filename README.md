@@ -1,132 +1,111 @@
-# Dotfiles
-My shell configuration files, managed with a bare git repository.
+# dotfiles
+
+Cross-platform shell setup for **zsh** (macOS / Linux / WSL) and **PowerShell** (Windows / macOS / Linux), managed with a [bare git repo](https://www.atlassian.com/git/tutorials/dotfiles).
 
 ## What's included
-- `.zshrc` — Zsh config with Oh My Zsh, Powerlevel10k, plugins (sources `.aliases`)
-- `.aliases` — Shell aliases (git, navigation, dev, system, fail2ban)
-- `.p10k.zsh` — Powerlevel10k theme configuration (auto-generated during setup)
-- `bin/rcc` — React component creator script (create boilerplate React components)
 
-## Setup on a new machine
+| File | Purpose |
+|------|---------|
+| `.zshrc` | Entry point — detects OS, sources platform file |
+| `.zshrc.macos` | macOS zsh config (OMZ, nvm, ng completion) |
+| `.zshrc.linux` | Linux/WSL zsh config (OMZ) |
+| `.p10k.zsh.macos` / `.p10k.zsh.linux` | Powerlevel10k prompt config per platform |
+| `.aliases` | Shared aliases (git, docker, navigation, tree…) |
+| `.aliases.macos` / `.aliases.linux` | Platform-specific aliases |
+| `Documents/PowerShell/Microsoft.PowerShell_profile.ps1` | PowerShell profile (Oh-My-Posh, git aliases, PSReadLine) |
+| `bin/bootstrap.sh` | Install font + Oh-My-Posh on macOS/Linux |
+| `bin/bootstrap.ps1` | Install font + Oh-My-Posh on Windows |
 
-### 1. Install dependencies
-```bash
-# Install Zsh
-sudo apt update && sudo apt install -y zsh git curl
+## Install on a new machine
 
-# Install Oh My Zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+### 1 — Clone the bare repo
 
-# Install Powerlevel10k theme
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-
-# Install zsh plugins
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+```sh
+git clone --bare git@github.com:karchto/dotfiles.git "$HOME/.dotfiles"
 ```
 
-### 2. Clone the dotfiles repo
+### 2 — Check out the files
 
-**With SSH (requires SSH key configured):**
-```bash
-git clone --bare git@github.com:karchtho/dotfiles.git $HOME/.dotfiles
+```sh
+git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" checkout
 ```
 
-**Or with HTTPS:**
-```bash
-git clone --bare https://github.com/karchtho/dotfiles.git $HOME/.dotfiles
-```
+If git complains about existing files, back them up and retry:
 
-Then create the alias:
-```bash
-alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
-```
-
-### 3. Checkout the files
-```bash
-dotfiles checkout
-```
-
-**If you get conflicts** (existing files that would be overwritten):
-```bash
+```sh
 mkdir -p ~/.dotfiles-backup
-mv ~/.zshrc ~/.dotfiles-backup/
-# Move other conflicting files if needed
-dotfiles checkout
+git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" checkout 2>&1 \
+  | grep "^\s" | awk '{print $1}' \
+  | xargs -I{} mv "$HOME/{}" "$HOME/.dotfiles-backup/{}"
+git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" checkout
 ```
 
-### 4. Configure the repo
-```bash
-dotfiles config --local status.showUntrackedFiles no
+### 3 — Hide untracked files
+
+```sh
+git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" config status.showUntrackedFiles no
 ```
 
-### 5. Reload your shell
-```bash
-source ~/.zshrc
+### 4 — Run bootstrap
+
+**macOS / Linux (zsh + PowerShell font):**
+```sh
+~/bin/bootstrap.sh
+```
+
+**Windows (PowerShell, run elevated):**
+```powershell
+~/bin/bootstrap.ps1
+```
+
+### 5 — Set terminal font
+
+After bootstrap installs the font, configure each terminal to use **MesloLGS NF**:
+
+#### macOS — Ghostty
+Add to `~/.config/ghostty/config`:
+```
+font-family = MesloLGS NF
+```
+
+#### macOS — iTerm2
+Preferences → Profiles → Text → Font → set to **MesloLGS NF**
+
+#### macOS — Terminal.app
+Terminal → Settings → Profiles → your profile → Font → Change → **MesloLGS NF**
+
+#### Linux — Konsole
+Settings → Edit Current Profile → Appearance → Font → **MesloLGS NF**
+
+#### Windows — Windows Terminal
+Settings → your profile → Appearance → Font face → **MesloLGS NF**
+
+---
+
+## Daily use
+
+```sh
+# Check status
+dotfiles status
+
+# Stage and commit changes
+dotfiles add ~/.zshrc
+dotfiles commit -m "update zshrc"
+dotfiles push
+
+# Pull updates on another machine
+dotfiles pull
 ```
 
 ---
 
 ## How it works
 
-This repo uses the **bare git repository** method. The git data lives in `~/.dotfiles` while files stay in their normal locations (`~/.zshrc`, `~/bin/`, etc.).
+`dotfiles` is an alias for `git --git-dir=$HOME/.dotfiles --work-tree=$HOME`.
+The bare repo stores git data in `~/.dotfiles/` while treating your home directory as the working tree — no symlinks needed.
 
-You interact with it using a `dotfiles` alias instead of `git`:
-```bash
-dotfiles status
-dotfiles add ~/.zshrc
-dotfiles commit -m "updated aliases"
-dotfiles push
-```
+Platform detection happens in `.zshrc`:
+- `$OSTYPE == darwin*` → sources `.zshrc.macos` and creates `~/.p10k.zsh → ~/.p10k.zsh.macos`
+- `$OSTYPE == linux-gnu*` → sources `.zshrc.linux` and creates `~/.p10k.zsh → ~/.p10k.zsh.linux`
 
-**Why isn't Oh My Zsh in the repo?**
-- Keeps the repo lightweight (a few KB instead of 50+ MB)
-- Oh My Zsh updates independently with `omz update`
-- No merge conflicts between your config and Oh My Zsh updates
-- Standard practice in the dotfiles community
-
----
-
-## Daily usage
-
-### Adding new files
-```bash
-dotfiles add ~/.some-config
-dotfiles commit -m "added some-config"
-dotfiles push
-```
-
-### Useful commands
-| Command | Description |
-|---------|-------------|
-| `dotfiles status` | See what's changed |
-| `dotfiles diff` | See actual changes |
-| `dotfiles add -u` | Stage all modified tracked files |
-| `dotfiles commit -m "msg"` | Commit changes |
-| `dotfiles push` | Push to GitHub |
-| `dotfiles pull` | Pull latest changes |
-
----
-
-## Aliases cheatsheet
-
-### Git
-- `gs` → git status
-- `ga` → git add
-- `gc "msg"` → git commit -m "msg"
-- `gp` → git push
-- `gl` → git pull
-- `glog` → pretty git log
-
-### Navigation
-- `..` / `...` / `....` → cd up directories
-- `ll` → detailed file list
-
-### Dev
-- `nrd` → npm run dev
-- `serve` → python http server on :8000
-- `rcc component-name` → create React component
-
-### System
-- `update` → apt update && upgrade
-- `reload` → source ~/.zshrc
+Tool guards: aliases and completions that depend on optional tools (`ng`, `bat`, `oh-my-posh`, `bun`) are wrapped in `command -v` checks so missing tools produce no errors on startup.
