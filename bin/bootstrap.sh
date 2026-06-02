@@ -27,6 +27,8 @@ if [[ -d "$HOME/.oh-my-zsh" ]]; then
 else
     echo "==> Installing Oh-My-Zsh..."
     RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    echo "==> Restoring dotfiles .zshrc (OMZ installer overwrites it)..."
+    git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" checkout -- "$HOME/.zshrc"
 fi
 
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
@@ -98,7 +100,6 @@ if [[ "$OS" == "Linux" ]]; then
     echo "Next steps:"
     echo "  1. Log out and back in (or open a new terminal) for zsh to take effect"
     echo "  2. Set your terminal font to 'MesloLGS NF'"
-    echo "  3. Run 'p10k configure' to customize the prompt"
 else
     echo "Set your terminal font to 'MesloLGS NF' (see README)."
 fi
