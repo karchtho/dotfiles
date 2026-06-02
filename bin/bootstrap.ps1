@@ -1,4 +1,4 @@
-# Bootstrap for Windows: installs Oh-My-Posh, MesloLGS NF font, and writes
+﻿# Bootstrap for Windows: installs Oh-My-Posh, MesloLGS NF font, and writes
 # the PowerShell profile to the correct Windows location.
 # Run once in an elevated PowerShell after cloning your dotfiles.
 
@@ -8,7 +8,11 @@ if (Get-Command oh-my-posh -ErrorAction SilentlyContinue) {
     Write-Host "  Already installed."
 } else {
     Write-Host "  Installing via winget..."
-    winget install JanDeSmet.OhMyPosh --accept-package-agreements --accept-source-agreements
+    winget install JanDeSmet.OhMyPosh --source winget --accept-package-agreements --accept-source-agreements 2>&1 | Out-Null
+    if (-not (Get-Command oh-my-posh -ErrorAction SilentlyContinue)) {
+        Write-Host "  winget failed, trying official installer..."
+        Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://ohmyposh.dev/install.ps1'))
+    }
     $env:PATH = [System.Environment]::GetEnvironmentVariable('PATH', 'Machine') + ';' +
                 [System.Environment]::GetEnvironmentVariable('PATH', 'User')
 }
@@ -43,15 +47,19 @@ if (Get-Command oh-my-posh -ErrorAction SilentlyContinue) {
 }
 
 # ── PSReadLine ───────────────────────────────────────────────────────────────
-if (Get-Module -ListAvailable PSReadLine) {
-    Set-PSReadLineOption -PredictionSource History
-    Set-PSReadLineOption -PredictionViewStyle ListView
+$_psrl = Get-Module -ListAvailable PSReadLine | Sort-Object Version -Descending | Select-Object -First 1
+if ($_psrl) {
     Set-PSReadLineOption -EditMode Emacs
     Set-PSReadLineKeyHandler -Key Tab        -Function MenuComplete
     Set-PSReadLineKeyHandler -Key UpArrow    -Function HistorySearchBackward
     Set-PSReadLineKeyHandler -Key DownArrow  -Function HistorySearchForward
     Set-PSReadLineKeyHandler -Chord 'Ctrl+r' -Function ReverseSearchHistory
+    if ($_psrl.Version -ge [Version]'2.1.0') {
+        Set-PSReadLineOption -PredictionSource History
+        Set-PSReadLineOption -PredictionViewStyle ListView
+    }
 }
+Remove-Variable _psrl
 
 # ── Git aliases ──────────────────────────────────────────────────────────────
 function gs   { git status @args }

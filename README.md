@@ -13,8 +13,8 @@ Cross-platform shell setup for **zsh** (macOS / Linux / WSL) and **PowerShell** 
 | `.aliases` | Shared aliases (git, docker, navigation, tree…) |
 | `.aliases.macos` / `.aliases.linux` | Platform-specific aliases |
 | `Documents/PowerShell/Microsoft.PowerShell_profile.ps1` | PowerShell profile (Oh-My-Posh, git aliases, PSReadLine) |
-| `bin/bootstrap.sh` | Install font + Oh-My-Posh on macOS/Linux |
-| `bin/bootstrap.ps1` | Install font + Oh-My-Posh on Windows |
+| `bin/bootstrap.sh` | Install zsh, Oh-My-Zsh, Powerlevel10k, plugins, and font (macOS/Linux) |
+| `bin/bootstrap.ps1` | Install Oh-My-Posh and font (Windows) |
 
 ## Install on a new machine
 
@@ -48,14 +48,23 @@ git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" config status.showUntrackedF
 
 ### 4 — Run bootstrap
 
-**macOS / Linux (zsh + PowerShell font):**
+**macOS / Linux:**
 ```sh
-~/bin/bootstrap.sh
+bash ~/bin/bootstrap.sh
 ```
+
+Installs (skips anything already present):
+- **Linux only:** zsh via `apt`, sets it as your default shell
+- Oh-My-Zsh
+- Powerlevel10k theme
+- `zsh-autosuggestions` and `zsh-syntax-highlighting` plugins
+- MesloLGS NF font
+
+On Linux, log out and back in after bootstrap so zsh takes effect. Then run `p10k configure` if you want to tweak the prompt.
 
 **Windows (PowerShell, run elevated):**
 ```powershell
-~/bin/bootstrap.ps1
+~\.dotfiles\bin\bootstrap.ps1
 ```
 
 ### 5 — Set terminal font
