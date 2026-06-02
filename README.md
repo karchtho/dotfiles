@@ -60,7 +60,7 @@ Installs (skips anything already present):
 - `zsh-autosuggestions` and `zsh-syntax-highlighting` plugins
 - MesloLGS NF font
 
-On Linux, log out and back in after bootstrap so zsh takes effect. Then run `p10k configure` if you want to tweak the prompt.
+On Linux, log out and back in after bootstrap so zsh takes effect. The Powerlevel10k config is already in the repo (`.p10k.zsh.linux`) and symlinked automatically by `.zshrc`.
 
 **Windows (PowerShell, run elevated):**
 ```powershell
