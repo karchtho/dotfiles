@@ -31,3 +31,23 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 fpath=("$HOME/.bun" $fpath)
 
 
+# Shipit Work specific
+bob-audit-show-latest() {
+  cat /var/log/bob-audit/rapport-$(date +%F).txt
+}
+
+  
+bob-docker-images() {
+  sudo -u maintainer bash -c 'grep -r "image:" /srv/*/docker-compose.yml' 2>/dev/null | awk '
+    {
+      split($0, a, "/")
+      svc = a[3]
+      sub(/.*image:[[:space:]]*/, "")
+      img = $0
+      if (img ~ /:latest$/ || img !~ /:/)
+        printf "  [!]  %-20s %s  <- non epingle\n", svc, img
+      else
+        printf "  [ok] %-20s %s\n", svc, img
+    }
+  '
+}
