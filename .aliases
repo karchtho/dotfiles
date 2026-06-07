@@ -217,3 +217,9 @@ elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
   # Linux-specific aliases
   [ -f ~/.aliases.linux ] && source ~/.aliases.linux
 fi
+
+# ============================================================================
+# Shipit Green
+# ============================================================================
+alias rdp-bobafett='sudo xfreerdp /v:192.168.100.252 /u:thomas /cert:ignore /admin /d:TILIA'
+
