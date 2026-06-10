@@ -222,4 +222,8 @@ fi
 # Shipit Green
 # ============================================================================
 alias rdp-bobafett='sudo xfreerdp /v:192.168.100.252 /u:thomas /cert:ignore /admin /d:TILIA'
+alias rdp-jarjar='sudo xfreerdp /v:192.168.100.240 /u:AdminLocal /cert:ignore /admin /d:TILIA'
+alias rdp-jabba='sudo xfreerdp /v:192.168.100.243 /u:AdminLocal /cert:ignore /admin /d:TILIA'
+alias rdp-palpat='sudo xfreerdp /v:192.168.100.212 /u:AdminLocal /cert:ignore /admin /d:TILIA'
+alias rdp-tarkin='sudo xfreerdp /v:192.168.100.202 /u:AdminLocal /cert:ignore /admin /d:TILIA'
 
