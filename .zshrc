@@ -1,6 +1,9 @@
 # Must be set before instant prompt is sourced
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
+# Get RDP secret file for Shipit administartion
+source ~/.rdp-secrets
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -51,3 +54,4 @@ bob-docker-images() {
     }
   '
 }
+export DOCKER_HOST=unix:///run/docker.sock
