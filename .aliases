@@ -221,11 +221,7 @@ fi
 # ============================================================================
 # Shipit Green
 # ============================================================================
-rdp-bobafett() { xfreerdp /v:192.168.100.252 /u:thomas /p:$BOBAFETT_PASS /cert:ignore /admin /d:TILIA /dynamic-resolution &>/dev/null & }
-rdp-jarjar()   { xfreerdp /v:192.168.100.240 /u:AdminLocal /p:$JARJAR_PASS /cert:ignore /admin /d:TILIA /dynamic-resolution &>/dev/null & }
-rdp-jabba()    { xfreerdp /v:192.168.100.243 /u:AdminLocal /p:$JABBA_PASS /cert:ignore /admin /d:TILIA /dynamic-resolution &>/dev/null & }
-rdp-palpat()   { xfreerdp /v:192.168.100.212 /u:AdminLocal /p:$PALPAT_PASS /cert:ignore /admin /d:TILIA /dynamic-resolution &>/dev/null & }
-rdp-tarkin()   { xfreerdp /v:192.168.100.202 /u:AdminLocal /p:$TARKIN_PASS /cert:ignore /admin /d:TILIA /dynamic-resolution &>/dev/null & }
+[ -f ~/.aliases.work ] && source ~/.aliases.work
 
 alias winboat='DOCKER_HOST=unix:///run/docker.sock ~/Applications/winboat*.AppImage &>/dev/null &'
 alias rdp-winboat='xfreerdp /v:localhost:$(docker port WinBoat 3389/tcp | cut -d: -f2) /u:thomas /p:135789 /dynamic-resolution &>/dev/null &'
