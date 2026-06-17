@@ -11,3 +11,13 @@ rdp-jarjar()   { _rdp /v:192.168.100.240 /u:AdminLocal /p:$JARJAR_PASS /cert:ign
 rdp-jabba()    { _rdp /v:192.168.100.243 /u:AdminLocal /p:$JABBA_PASS /cert:ignore /admin /d:TILIA /dynamic-resolution; }
 rdp-palpat()   { _rdp /v:192.168.100.212 /u:AdminLocal /p:$PALPAT_PASS /cert:ignore /admin /d:TILIA /dynamic-resolution; }
 rdp-tarkin()   { _rdp /v:192.168.100.202 /u:AdminLocal /p:$TARKIN_PASS /cert:ignore /admin /d:TILIA /dynamic-resolution; }
+
+# Diehl access console
+accessconsole() {
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    sudo "/Applications/Access Console - access.diehl.com.app/Contents/MacOS/sra-con"
+  else
+    echo "Access Console only available on macOS" >&2
+    return 1
+  fi
+}
