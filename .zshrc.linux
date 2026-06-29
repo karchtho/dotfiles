@@ -48,3 +48,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # Dotfiles management
 alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
+
+# Docker socket (Linux path)
+export DOCKER_HOST=unix:///run/docker.sock

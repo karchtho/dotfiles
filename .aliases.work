@@ -25,6 +25,19 @@ accessconsole() {
 entity() {
   if [[ "$OSTYPE" == "linux"* ]]; then
     /projects/shipit/entity-client/.venv/bin/python /projects/shipit/entity-client/src/entity_client/_main.py   
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+    /Users/thomas/Documents/projects/shipit/Diehl_Entity/.venv/bin/python /Users/thomas/Documents/projects/shipit/Diehl_Entity/src/entity_client/_main.py
+  else
+    echo "Not configured yet" >&2
+    return 1
+  fi
+}
+
+entity-old() {
+  if [[ "$OSTYPE" == "linux"* ]]; then
+    /projects/shipit/entity-client/.venv/bin/python /projects/shipit/entity-client/src/entity_client/_main.py
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+   /Users/thomas/Documents/projects/Diehl_Entity/.venv/bin/python /Users/thomas/Documents/projects/Diehl_Entity/src/entity_client/_main.py
   else
     echo "Not configured yet" >&2
     return 1
