@@ -19,7 +19,7 @@ fi
 alias f2b='sudo fail2ban-client status sshd'
 
 # QOL
-alias vault='cat /media/thomas/KeePassUSB/blablabla | xclip -selection clipboard'
+alias vault='cat /home/thomas/Documents/vault/perso/blabla.txt | xclip -selection clipboard'
 
 # VSCode remote SSH aliases for development
 alias ang-portfolio='code --remote ssh-remote+vmCDA /home/ubuntu/projects/portfolio-v2'

@@ -1,6 +1,13 @@
 # Linux-specific Zsh configuration
 # This file is sourced from .zshrc when on a Linux system
 
+# Homebrew (linuxbrew) — brew shellenv only adds Homebrew/bin, but formula
+# symlinks (glab, etc.) live in .linuxbrew/bin, so add both.
+if [ -d /home/linuxbrew/.linuxbrew ]; then
+  eval "$(/home/linuxbrew/.linuxbrew/Homebrew/bin/brew shellenv)"
+  export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+fi
+
 # Path to Oh My Zsh installation
 export ZSH="$HOME/.oh-my-zsh"
 
