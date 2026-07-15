@@ -171,7 +171,9 @@ alias dmysql='docker exec -it maria-test mysql -u root -ptest'
 # Use 'dc' prefix for compose, 'd' prefix for raw docker
 alias dc='docker compose -f docker-compose.dev.yml'
 alias dcp='docker compose -f docker-compose.prod.yml'
-alias do='docker compose -f docker-compose.yml -f docker-compose.dev.yml'
+# NOTE: not named 'do' — that's a zsh reserved word (closes for/while loops)
+# and aliasing it breaks `for x in ...; do ... done` parsing everywhere.
+alias dco='docker compose -f docker-compose.yml -f docker-compose.dev.yml'
 
 alias dcup='dc up'
 alias dcupd='dc up -d'
@@ -191,19 +193,19 @@ alias dcshf='dc exec frontend sh'
 alias dcshb='dc exec backend sh'
 
 # Override pattern: base + dev overrides (docker-compose.yml + docker-compose.dev.yml)
-# 'do' is already defined above — these are its sub-commands
-alias doup='do up'
-alias doupd='do up -d'
-alias dostop='do stop'
-alias dostart='do start'
-alias dodown='do down'
-alias dobuild='do build'
-alias dologs='do logs -f'
-alias dops='do ps'
-alias donuke='do down -v --remove-orphans'
-alias dopurge='do down -v --rmi all --remove-orphans'
-alias doshf='do exec frontend sh'
-alias doshb='do exec backend sh'
+# 'dco' is already defined above — these are its sub-commands
+alias doup='dco up'
+alias doupd='dco up -d'
+alias dostop='dco stop'
+alias dostart='dco start'
+alias dodown='dco down'
+alias dobuild='dco build'
+alias dologs='dco logs -f'
+alias dops='dco ps'
+alias donuke='dco down -v --remove-orphans'
+alias dopurge='dco down -v --rmi all --remove-orphans'
+alias doshf='dco exec frontend sh'
+alias doshb='dco exec backend sh'
 
 # ============================================================================
 # Platform-specific aliases
