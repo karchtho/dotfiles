@@ -6,7 +6,7 @@ else
   _rdp() { xfreerdp "$@" &>/dev/null & }
 fi
 
-rdp-bobafett() { _rdp /v:192.168.100.252 /u:thomas /p:$BOBAFETT_PASS /cert:ignore /admin /d:TILIA /dynamic-resolution; }
+rdp-bobafett() { _rdp /v:192.168.100.252 /u:administrateur /p:$BOBAFETT_PASS /cert:ignore /admin /d:TILIA /dynamic-resolution; }
 rdp-jarjar()   { _rdp /v:192.168.100.240 /u:AdminLocal /p:$JARJAR_PASS /cert:ignore /admin /d:TILIA /dynamic-resolution; }
 rdp-jabba()    { _rdp /v:192.168.100.243 /u:AdminLocal /p:$JABBA_PASS /cert:ignore /admin /d:TILIA /dynamic-resolution; }
 rdp-palpat()   { _rdp /v:192.168.100.212 /u:AdminLocal /p:$PALPAT_PASS /cert:ignore /admin /d:TILIA /dynamic-resolution; }
